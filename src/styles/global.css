@@ -1,0 +1,338 @@
+/* ==========================================================================
+   AIStackHub — design tokens
+   Concept: "Field Notes" — a tool evaluation lab, not a generic SaaS blog.
+   Paper background, ink text, pine-green working accent, gold verdict mark.
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Fraunces';
+  src: local('Fraunces');
+}
+
+:root {
+  /* color */
+  --paper: #f6f5f1;
+  --paper-raised: #efece4;
+  --ink: #1b1b18;
+  --ink-soft: #514f47;
+  --pine: #2f5d50;
+  --pine-deep: #1f4038;
+  --gold: #c9a227;
+  --line: #dad6cc;
+
+  /* type */
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+
+  /* layout */
+  --measure: 68ch;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #17181a;
+    --paper-raised: #1f2023;
+    --ink: #ece9e1;
+    --ink-soft: #a9a59a;
+    --pine: #6fae9c;
+    --pine-deep: #8ecab8;
+    --gold: #d9b94a;
+    --line: #35362f;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #17181a;
+  --paper-raised: #1f2023;
+  --ink: #ece9e1;
+  --ink-soft: #a9a59a;
+  --pine: #6fae9c;
+  --pine-deep: #8ecab8;
+  --gold: #d9b94a;
+  --line: #35362f;
+}
+
+* { box-sizing: inherit; }
+
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg { max-width: 100%; display: block; }
+
+a {
+  color: var(--pine-deep);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+a:hover { color: var(--pine); }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 0 0 0.5em;
+}
+
+h1 { font-size: clamp(2rem, 4vw + 1rem, 3.4rem); font-weight: 500; }
+h2 { font-size: clamp(1.4rem, 2vw + 1rem, 2rem); }
+h3 { font-size: 1.15rem; }
+
+p { margin: 0 0 1.1em; }
+
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.prose {
+  max-width: var(--measure);
+}
+
+/* -- header ---------------------------------------------------------- */
+
+.site-header {
+  border-bottom: 1px solid var(--line);
+  padding: 1.4rem 0;
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  background: var(--paper);
+  z-index: 10;
+}
+
+.site-header .wrap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+
+.wordmark span { color: var(--pine); }
+
+.site-nav {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-size: 0.95rem;
+}
+
+.site-nav a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current="page"] {
+  color: var(--ink);
+  border-bottom-color: var(--gold);
+}
+
+/* -- hero -------------------------------------------------------------- */
+
+.hero {
+  padding: clamp(2.5rem, 6vw, 5rem) 0 2.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero .kicker {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--pine-deep);
+  margin: 0 0 1rem;
+}
+
+.hero p.lede {
+  font-size: 1.15rem;
+  color: var(--ink-soft);
+  max-width: 56ch;
+}
+
+/* -- article list -------------------------------------------------------- */
+
+.entry-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 1.5rem;
+  padding: 1.8rem 0;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+}
+
+@media (max-width: 640px) {
+  .entry { grid-template-columns: 1fr; gap: 0.4rem; }
+}
+
+.entry time {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  padding-top: 0.3em;
+}
+
+.entry h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.35em;
+}
+
+.entry h2 a {
+  color: var(--ink);
+  text-decoration: none;
+}
+.entry h2 a:hover { color: var(--pine); }
+
+.entry .dek {
+  color: var(--ink-soft);
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+.entry .tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--pine-deep);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 0.1em 0.5em;
+  margin-top: 0.6em;
+}
+
+/* -- verdict block (used inside reviews/comparisons) --------------------- */
+
+.verdict {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--gold);
+  background: var(--paper-raised);
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0;
+}
+
+.verdict .verdict-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  margin: 0 0 0.4em;
+}
+
+.verdict p:last-child { margin-bottom: 0; }
+
+/* -- article body -------------------------------------------------------- */
+
+.article-header {
+  padding: 2.5rem 0 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.article-header .meta {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  margin-top: 0.75rem;
+}
+
+.article-body {
+  padding: 2.5rem 0;
+}
+
+.article-body h2 { margin-top: 1.8em; }
+.article-body h3 { margin-top: 1.4em; }
+
+.article-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.95rem;
+  overflow-x: auto;
+  display: block;
+}
+
+.article-body th, .article-body td {
+  text-align: left;
+  padding: 0.6em 0.9em;
+  border: 1px solid var(--line);
+}
+
+.article-body th {
+  background: var(--paper-raised);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.article-body code {
+  font-family: var(--font-mono);
+  background: var(--paper-raised);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+/* -- footer -------------------------------------------------------------- */
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 2.5rem 0;
+  margin-top: 3rem;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.site-footer .wrap {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.site-footer a { color: var(--ink-soft); }
+
+/* -- section label -------------------------------------------------------- */
+
+.section-head {
+  padding: 2rem 0 0.5rem;
+}
+
+.section-head p {
+  color: var(--ink-soft);
+  max-width: 60ch;
+}

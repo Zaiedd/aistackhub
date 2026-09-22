@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft && data.section === 'ai-for-students'))
+  .sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+---
+<BaseLayout
+  title="AI Tools for Students"
+  description="Hands-on reviews of AI tools for research, note-taking, and studying — tested on real coursework."
+  current="/ai-for-students/"
+>
+  <div class="wrap section-head">
+    <h1>AI for Students</h1>
+    <p>Summarizers, note-takers, and study tools — tested against real papers and real exams, not demo data.</p>
+  </div>
+  <section class="wrap">
+    <ul class="entry-list">
+      {posts.map(post => (
+        <li class="entry">
+          <time datetime={post.data.date}>
+            {new Date(post.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+          </time>
+          <div>
+            <h2><a href={`/posts/${post.slug}/`}>{post.data.title}</a></h2>
+            <p class="dek">{post.data.description}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+    {posts.length === 0 && <p class="dek">No reviews published in this section yet.</p>}
+  </section>
+</BaseLayout>

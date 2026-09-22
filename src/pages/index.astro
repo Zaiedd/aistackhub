@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+
+const sectionLabels = {
+  'ai-for-students': 'Students',
+  'ai-for-developers': 'Developers',
+  'ai-for-business': 'Business',
+  'comparisons': 'Comparison',
+};
+---
+<BaseLayout
+  title="AI Tool Reviews, Tested by Hand"
+  description="Honest, hands-on reviews and comparisons of AI tools for students, developers, and freelancers — no filler, no sponsored fluff."
+>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">FIELD-TESTED AI TOOL REVIEWS</p>
+      <h1>We test the AI tools so your next hour isn't wasted on the wrong one.</h1>
+      <p class="lede">
+        No listicles copy-pasted from press releases. Every review here comes from actually
+        using the tool on a real task — studying, coding, or running a small business.
+      </p>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <ul class="entry-list">
+      {posts.map(post => (
+        <li class="entry">
+          <time datetime={post.data.date}>
+            {new Date(post.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+          </time>
+          <div>
+            <h2><a href={`/posts/${post.slug}/`}>{post.data.title}</a></h2>
+            <p class="dek">{post.data.description}</p>
+            <span class="tag">{sectionLabels[post.data.section]}</span>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

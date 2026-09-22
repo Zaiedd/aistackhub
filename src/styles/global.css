@@ -307,6 +307,56 @@ p { margin: 0 0 1.1em; }
   font-size: 0.9em;
 }
 
+/* -- inline diagrams (timeline / decision-flow) used inside article body - */
+
+.aistack-diagram {
+  margin: 2.2rem 0;
+  padding: 1.5rem 1rem 1rem;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.aistack-diagram svg { display: block; margin: 0 auto; min-width: 560px; }
+
+.aistack-diagram .dg-caption {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  text-align: center;
+  margin: 0.75rem 0 0;
+}
+
+.tl-node circle {
+  fill: var(--paper);
+  stroke: var(--pine);
+  stroke-width: 2;
+  transition: r 0.2s ease, fill 0.2s ease;
+}
+
+.tl-node:hover circle {
+  fill: var(--pine);
+  r: 8;
+}
+
+.tl-node text { fill: var(--ink); font-family: var(--font-body); }
+.tl-node .tl-date { fill: var(--pine-deep); font-family: var(--font-mono); font-size: 11px; }
+.tl-line { stroke: var(--line); stroke-width: 2; }
+.tl-arrowhead { fill: var(--line); }
+
+.df-box {
+  fill: var(--paper);
+  stroke: var(--line);
+  stroke-width: 1.5;
+  transition: stroke 0.2s ease;
+}
+.df-box:hover { stroke: var(--gold); }
+.df-box-text { fill: var(--ink); font-family: var(--font-body); font-size: 13px; }
+.df-arrow { stroke: var(--pine); stroke-width: 2; fill: none; }
+.df-arrowhead { fill: var(--pine); }
+.df-q { fill: var(--ink); font-family: var(--font-display); font-size: 15px; font-weight: 600; }
+
 /* -- footer -------------------------------------------------------------- */
 
 .site-footer {

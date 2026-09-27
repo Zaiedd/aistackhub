@@ -1,17 +1,11 @@
 ---
-canonical: https://aistackhub.pages.dev/posts/chatgpt-vs-claude-vs-gemini-second-language/
-meta-description: I study in English but think in Arabic. Here's which AI actually helps when the course material, the explanation, and your own brain are working in different languages.
-meta-og:description: I study in English but think in Arabic. Here's which AI actually helps when the course material, the explanation, and your own brain are working in different languages.
-meta-og:title: ChatGPT vs Claude vs Gemini: Which One Actually Helps If You're Studying in Your Second Language
-meta-og:type: website
-title: ChatGPT vs Claude vs Gemini: Which One Actually Helps If You're Studying in Your Second Language · AIStackHub
+title: "ChatGPT vs Claude vs Gemini: Which One Actually Helps If You're Studying in Your Second Language"
+description: "I study in English but think in Arabic. Here's which AI actually helps when the course material, the explanation, and your own brain are working in different languages."
+date: "2026-09-27"
+section: "ai-for-students"
+tags: ["chatgpt", "claude", "gemini", "second-language", "bilingual", "students"]
+draft: false
 ---
-
-AI for Students
-
-# ChatGPT vs Claude vs Gemini: Which One Actually Helps If You're Studying in Your Second Language
-
-Published [DATE] · Reviewed by hand, not just generated
 
 Every comparison of these three assumes the same student: someone reading, thinking, and writing in one language. That's not most of the world. Across the Middle East, and in plenty of other places, students sit through lectures in English, take notes half in English and half in their own language, and then try to study from both at once. None of the popular "ChatGPT vs Claude vs Gemini for students" posts — including the two already on this site — test for that. This one does.
 

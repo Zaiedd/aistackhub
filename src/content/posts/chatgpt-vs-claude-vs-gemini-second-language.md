@@ -49,6 +49,9 @@ ChatGPT was the most reliable at matching the exact phrasing style once given ex
 
 None of the three is built specifically for bilingual studying — this is a side effect of general capability, not a designed feature, and it shows. All three will drift, mistranslate, or default to the wrong language at some point in a long study session. The fix that worked consistently across all three: state your target language explicitly in every prompt rather than trusting the model to infer it from your notes, and double-check any technical term it translates against your actual course glossary before it goes into a flashcard.
 
-VERDICT
-
+<div class="verdict">
+<p class="verdict-label">VERDICT</p>
+<p>
 If you're studying material in one language and thinking in another, don't pick a model on general reputation — pick based on which failure mode costs you less. Use ChatGPT if you mainly need consistent language behavior over a long study session and exam-realistic practice questions. Use Gemini if you're merging notes that are already a real mix of two languages and want to keep both visible rather than collapsed into one. Use Claude if precision and organization of the explanation itself matters more to you than the model reliably staying in the language you started in — just watch it and redirect it back when it drifts. Whichever you use, never trust a translated technical term without checking it against your own course material first.
+</p>
+</div>

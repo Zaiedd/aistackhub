@@ -61,5 +61,5 @@ The takeaway: Copilot is not inherently secure or insecure, but it reflects inse
 ## Sources
 
 - [Pearce et al., "Asleep at the keyboard? Assessing the security of GitHub Copilot's code contributions", IEEE S&P 2022](https://doi.org/10.1109/SP46214.2022.9833571)
-- [Asare et al., "Is GitHub Copilot a substitute for human developers? An empirical evaluation", Empirical Software Engineering 2023](https://doi.org/10.1007/s10664-023-10325-0)
+- [Asare et al., "Is GitHub's Copilot as bad as humans at introducing vulnerabilities in code?", Empirical Software Engineering 2023](https://doi.org/10.1007/s10664-023-10380-1)
 - [Sandoval et al., "Lost at C: A user study on the security implications of large language model code assistants", USENIX Security 2023](https://www.usenix.org/conference/usenixsecurity23/presentation/sandoval)

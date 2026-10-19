@@ -44,15 +44,13 @@ const formatted = new Date(date).toLocaleDateString('en-US', {
       <slot />
     </div>
     {related.length > 0 && (
-      <div class="wrap" style="padding: 2rem 0 3rem;">
-        <h2 style="font-size: 1.15rem; margin-bottom: 1rem;">Related reading</h2>
-        <ul class="entry-list">
+      <div class="wrap" style="padding: 1.5rem 0 2.5rem;">
+        <h2 style="font-size: 1.15rem; margin-bottom: 0.75rem;">Related reading</h2>
+        <ul class="related-list">
           {related.map(r => (
-            <li class="entry">
-              <div>
-                <h2 style="font-size: 1.05rem;"><a href={`/posts/${r.slug}/`}>{r.title}</a></h2>
-                <p class="dek">{r.description}</p>
-              </div>
+            <li class="related-item">
+              <h3><a href={`/posts/${r.slug}/`}>{r.title}</a></h3>
+              <p class="dek">{r.description}</p>
             </li>
           ))}
         </ul>

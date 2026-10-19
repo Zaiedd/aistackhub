@@ -11,7 +11,8 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
+const toc = headings.filter(h => h.depth >= 2 && h.depth <= 3);
 const words = (post.body ?? '').split(/\s+/).filter(Boolean).length;
 const readingTime = Math.max(1, Math.round(words / 220));
 const allPosts = await getCollection('posts', ({ data }) => !data.draft);
@@ -34,6 +35,7 @@ const sectionLabels = {
   section={sectionLabels[post.data.section]}
   readingTime={readingTime}
   related={related}
+  toc={toc}
 >
   <Content />
 </PostLayout>

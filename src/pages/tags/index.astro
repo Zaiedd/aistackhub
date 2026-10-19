@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = await getCollection('posts', ({ data }) => !data.draft);
+const tagMap = new Map();
+for (const post of posts) {
+  for (const tag of post.data.tags ?? []) {
+    if (!tagMap.has(tag)) tagMap.set(tag, []);
+    tagMap.get(tag).push(post);
+  }
+}
+const tags = [...tagMap.entries()].sort((a, b) => b[1].length - a[1].length);
+---
+<BaseLayout title="Tags" description="Browse AIStackHub articles by tag." current="/tags/">
+  <div class="wrap section-head">
+    <h1>Tags</h1>
+    <p>Browse articles by topic.</p>
+  </div>
+  <section class="wrap">
+    <ul class="entry-list">
+      {tags.map(([tag, list]) => (
+        <li class="entry">
+          <div>
+            <h2><a href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a></h2>
+            <p class="dek">{list.length} article{list.length === 1 ? '' : 's'}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

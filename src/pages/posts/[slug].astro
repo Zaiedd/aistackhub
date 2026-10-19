@@ -12,6 +12,14 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
+const words = (post.body ?? '').split(/\s+/).filter(Boolean).length;
+const readingTime = Math.max(1, Math.round(words / 220));
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+const related = allPosts
+  .filter(p => p.slug !== post.slug && p.data.section === post.data.section)
+  .sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf())
+  .slice(0, 3)
+  .map(p => ({ slug: p.slug, title: p.data.title, description: p.data.description }));
 const sectionLabels = {
   'ai-for-students': 'AI for Students',
   'ai-for-developers': 'AI for Developers',
@@ -24,6 +32,8 @@ const sectionLabels = {
   description={post.data.description}
   date={post.data.date}
   section={sectionLabels[post.data.section]}
+  readingTime={readingTime}
+  related={related}
 >
   <Content />
 </PostLayout>

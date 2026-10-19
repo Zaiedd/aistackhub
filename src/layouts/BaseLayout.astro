@@ -7,8 +7,10 @@ interface Props {
   title: string;
   description: string;
   current?: string;
+  ogImage?: string;
 }
-const { title, description, current } = Astro.props as Props;
+const { title, description, current, ogImage } = Astro.props as Props;
+const resolvedOgImage = ogImage ?? '/apple-touch-icon.png';
 ---
 <!doctype html>
 <html lang="en">
@@ -26,9 +28,15 @@ const { title, description, current } = Astro.props as Props;
     <title>{title} · AIStackHub</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={Astro.url.href} />
+    <link rel="alternate" type="application/rss+xml" title="AIStackHub" href="/rss.xml" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content={new URL(resolvedOgImage, Astro.site ?? Astro.url).href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(resolvedOgImage, Astro.site ?? Astro.url).href} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

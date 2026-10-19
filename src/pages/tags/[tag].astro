@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  const tags = new Set();
+  for (const post of posts) for (const tag of post.data.tags ?? []) tags.add(tag);
+  return [...tags].map(tag => ({ params: { tag } }));
+}
+
+const { tag } = Astro.params;
+const posts = (await getCollection('posts', ({ data }) => !data.draft && (data.tags ?? []).includes(tag)))
+  .sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+---
+<BaseLayout title={`Tag: ${tag}`} description={`AIStackHub articles tagged "${tag}".`}>
+  <div class="wrap section-head">
+    <h1>Tag: {tag}</h1>
+    <p>{posts.length} article{posts.length === 1 ? '' : 's'}.</p>
+  </div>
+  <section class="wrap">
+    <ul class="entry-list">
+      {posts.map(post => (
+        <li class="entry">
+          <time datetime={post.data.date}>
+            {new Date(post.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+          </time>
+          <div>
+            <h2><a href={`/posts/${post.slug}/`}>{post.data.title}</a></h2>
+            <p class="dek">{post.data.description}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

@@ -6,8 +6,10 @@ interface Props {
   description: string;
   date: string;
   section: string;
+  readingTime?: number;
+  related?: { slug: string; title: string; description: string }[];
 }
-const { title, description, date, section } = Astro.props as Props;
+const { title, description, date, section, readingTime, related = [] } = Astro.props as Props;
 const formatted = new Date(date).toLocaleDateString('en-US', {
   year: 'numeric', month: 'long', day: 'numeric',
 });
@@ -17,10 +19,29 @@ const formatted = new Date(date).toLocaleDateString('en-US', {
     <div class="wrap article-header">
       <p class="verdict-label" style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--pine-deep); margin: 0 0 0.6em;">{section}</p>
       <h1>{title}</h1>
-      <p class="meta">Published {formatted} · Reviewed by hand, not just generated</p>
+      <p class="meta">
+        Published {formatted}
+        {readingTime ? ` · ${readingTime} min read` : ''}
+        · Reviewed by hand, not just generated
+      </p>
     </div>
     <div class="wrap article-body prose">
       <slot />
     </div>
+    {related.length > 0 && (
+      <div class="wrap" style="padding: 2rem 0 3rem;">
+        <h2 style="font-size: 1.15rem; margin-bottom: 1rem;">Related reading</h2>
+        <ul class="entry-list">
+          {related.map(r => (
+            <li class="entry">
+              <div>
+                <h2 style="font-size: 1.05rem;"><a href={`/posts/${r.slug}/`}>{r.title}</a></h2>
+                <p class="dek">{r.description}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
   </article>
 </BaseLayout>

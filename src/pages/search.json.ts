@@ -8,6 +8,7 @@ export async function GET() {
       description: post.data.description,
       section: post.data.section,
       tags: post.data.tags ?? [],
+      body: (post.body ?? '').slice(0, 4000),
     }));
   return new Response(JSON.stringify(posts), {
     headers: { 'Content-Type': 'application/json; charset=utf-8' },

@@ -1,39 +1,93 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Search" description="Search AIStackHub articles." current="/search/">
+<BaseLayout title="Smart search" description="Search AIStackHub articles by need, topic, or keyword." current="/search/">
   <div class="wrap section-head">
-    <h1>Search</h1>
-    <p>Search across all articles.</p>
+    <h1>Smart search</h1>
+    <p>Describe what you need (e.g. "free AI tool to study with") and we'll match it against every article.</p>
   </div>
   <section class="wrap">
-    <input id="q" type="search" placeholder="Type to search..." style="width:100%;padding:.6rem .8rem;font-size:1rem;border:1px solid var(--line);border-radius:4px;background:var(--paper);color:var(--ink);" />
+    <input id="q" type="search" placeholder="What do you need? e.g. free study tool, secure coding, long context..." style="width:100%;padding:.7rem .9rem;font-size:1rem;border:1px solid var(--line);border-radius:4px;background:var(--paper);color:var(--ink);" />
+    <p id="hint" class="dek" style="margin-top:.5rem;font-size:.85rem;">Tip: include words like "free", "student", "security", "long context", "transcription".</p>
     <ul id="results" class="entry-list" style="margin-top:1.5rem;"></ul>
-    <p id="empty" class="dek" style="display:none;margin-top:1rem;">No matching articles.</p>
+    <p id="empty" class="dek" style="display:none;margin-top:1rem;">No matching articles. Try different keywords.</p>
+    <p id="count" class="dek" style="display:none;margin-top:.5rem;font-size:.85rem;"></p>
   </section>
   <script is:inline>
     (function () {
       const input = document.getElementById('q');
       const list = document.getElementById('results');
       const empty = document.getElementById('empty');
+      const count = document.getElementById('count');
       let data = [];
       fetch('/search.json').then(r => r.json()).then(d => { data = d; render(''); });
+
+      function score(p, terms) {
+        let s = 0;
+        const title = p.title.toLowerCase();
+        const desc = p.description.toLowerCase();
+        const tags = (p.tags || []).join(' ').toLowerCase();
+        const body = (p.body || '').toLowerCase();
+        const section = (p.section || '').toLowerCase();
+        for (const t of terms) {
+          if (title.includes(t)) s += 5;
+          if (tags.includes(t)) s += 4;
+          if (desc.includes(t)) s += 3;
+          if (section.includes(t)) s += 2;
+          if (body.includes(t)) s += 1;
+        }
+        // bonus for matching multiple terms
+        const matched = terms.filter(t => title.includes(t) || desc.includes(t) || tags.includes(t) || body.includes(t)).length;
+        s += matched * 2;
+        return s;
+      }
+
+      function snippet(p, terms) {
+        const body = p.body || '';
+        const lower = body.toLowerCase();
+        let idx = -1;
+        for (const t of terms) {
+          const i = lower.indexOf(t);
+          if (i !== -1 && (idx === -1 || i < idx)) idx = i;
+        }
+        if (idx === -1) return p.description;
+        const start = Math.max(0, idx - 60);
+        const end = Math.min(body.length, idx + 120);
+        let s = body.slice(start, end).replace(/\s+/g, ' ').trim();
+        if (start > 0) s = '…' + s;
+        if (end < body.length) s = s + '…';
+        return highlight(s, terms);
+      }
+
+      function highlight(text, terms) {
+        let out = escapeHtml(text);
+        for (const t of terms) {
+          const re = new RegExp('(' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+          out = out.replace(re, '<mark>$1</mark>');
+        }
+        return out;
+      }
+
       function render(q) {
-        const term = q.trim().toLowerCase();
-        const filtered = term
-          ? data.filter(p =>
-              p.title.toLowerCase().includes(term) ||
-              p.description.toLowerCase().includes(term) ||
-              (p.tags || []).some(t => t.toLowerCase().includes(term)))
-            )
-          : data.slice(0, 12);
-        list.innerHTML = filtered.map(p =>
-          `<li class="entry"><div><h2 style="font-size:1.05rem;"><a href="/posts/${p.slug}/">${escapeHtml(p.title)}</a></h2><p class="dek">${escapeHtml(p.description)}</p></div></li>`
-        ).join('');
-        empty.style.display = (term && filtered.length === 0) ? 'block' : 'none';
+        const terms = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+        let ranked = data.map(p => ({ p, s: terms.length ? score(p, terms) : 0 }))
+          .filter(x => terms.length === 0 || x.s > 0)
+          .sort((a, b) => b.s - a.s);
+        if (terms.length === 0) ranked = data.slice(0, 12).map(p => ({ p, s: 0 }));
+        list.innerHTML = ranked.map(x => {
+          const p = x.p;
+          const snip = terms.length ? snippet(p, terms) : escapeHtml(p.description);
+          return `<li class="entry"><div><h2 style="font-size:1.05rem;"><a href="/posts/${p.slug}/">${escapeHtml(p.title)}</a></h2><p class="dek">${snip}</p><p style="font-size:.75rem;color:var(--ink-soft);margin-top:.3rem;">${escapeHtml(p.section)} · ${p.tags.slice(0,4).map(escapeHtml).join(', ')}</p></div></li>`;
+        }).join('');
+        empty.style.display = (terms.length && ranked.length === 0) ? 'block' : 'none';
+        count.style.display = terms.length ? 'block' : 'none';
+        count.textContent = terms.length ? `${ranked.length} result${ranked.length === 1 ? '' : 's'} (ranked by relevance)` : '';
       }
       input.addEventListener('input', e => render(e.target.value));
       function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
     })();
   </script>
+  <style>
+    mark { background: var(--gold); color: var(--ink); padding: 0 .15em; border-radius: 2px; }
+  </style>
 </BaseLayout>
